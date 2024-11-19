@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h2>Создание книги</h2>
+    <form th:method="POST" th:object="${book}" th:action="@{/books}">
+
+        <label for="name">Наименование книги</label>
+        <input type="text" id="name" required th:field="*{name}">
+        <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        <br>
+
+        <label for="yearOfProduction">Год издания книги</label>
+        <input type="text" id="yearOfProduction" required th:field="*{yearOfProduction}">
+        <div style="color:red" th:if="${#fields.hasErrors('yearOfProduction')}" th:errors="*{yearOfProduction}"></div>
+        <br>
+
+        <label for="author">Автор книги</label>
+        <input type="text" id="author" required th:field="*{author}">
+        <div style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+        <br>
+
+        <label for="owner">Книгу взял: </label>
+        <select id="owner" name="owner"> <!-- если поставить th:field="*{person}", то не работает атрибут th:selected -->
+            <option value="-1" selected>Книга свободна</option>
+            <option th:each="person : ${persons}" th:value="${person.getId()}" th:text="${person.getName()}">
+            </option>
+        </select>
+        <br>
+        <input type="submit" value="Создать книгу">
+
+    </form>
+
+</body>
+</html>

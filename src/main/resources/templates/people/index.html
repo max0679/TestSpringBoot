@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h2>Список читателей</h2>
+    <div th:each="person : ${people}">
+
+        <p>
+            <span>Читатель</span>
+            <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName() + ', ' + person.getYear()}"></a>
+            <span th:text="', книг в использовании: ' + ${person.getBooks().size()}"></span>
+        </p>
+
+    </div>
+
+    <br><hr>
+    <form th:method="GET" th:action="@{/people/new}">
+        <input type="submit" value="Создать читателя">
+    </form>
+    <br><hr>
+    <form th:method="GET" th:action="@{/books}">
+        <input type="submit" value="Перейти к книгам">
+    </form>
+
+</body>
+</html>

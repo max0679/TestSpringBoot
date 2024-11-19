@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2 th:text="${'Результаты поиска по запросу ' + search}"></h2>
+
+<!--    <form th:method="GET" th:action="@{/books/search?page={p}&search={s}(p=${currentPage}, s=${search})}" th:if="${books.size() != 0}">-->
+    <form th:method="GET" th:action="@{/books/search}" th:if="${books.size() != 0}">
+        <label for="sort">Сортировка книг</label>
+        <select id="sort" name="sort">
+            <option value="none" th:selected="${sort == 'none'}">убрать сортировку</option>
+            <option value="name" th:selected="${sort == 'name'}">по наименованию</option>
+            <option value="author" th:selected="${sort == 'author'}">по автору</option>
+            <option value="yearOfProduction" th:selected="${sort == 'yearOfProduction'}">по году</option>
+        </select>
+
+        <input type="hidden" name="search" th:value="${search}">
+        <input type="hidden" name="page" th:value="${currentPage}">
+
+        <input type="submit" value="выбрать сортировку">
+    </form>
+    <br><hr>
+    <form th:method="GET" th:action="@{/books/search}">
+        <label for="search">Введите первые буквы книги...</label>
+        <input type="text" id="search" name="search" th:value="${search}">
+        <input type="submit" value="искать книгу">
+    </form>
+    <br><hr>
+
+    </select>
+
+    <div th:each="book : ${books}">
+        <h2><a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getName()}"></a></h2>
+        <p th:text="${'год выпуска: ' + book.getYearOfProduction()}"></p>
+        <p th:text="${'автор книги: ' + book.getAuthor()}"></p>
+        <p th:if="${book.getPerson() == null}">книга свободна</p>
+        <p th:if="${book.getPerson() != null}">
+            <span>Книгу взял: </span>
+            <a th:href="@{/people/{id}(id=${book.getPerson().getId()})}"
+            th:text="${book.getPerson().getName()}"></a>
+        </p>
+        <br><hr>
+    </div>
+
+    <span th:each="currPage : ${#numbers.sequence(1, countOfPages)}">
+        <a th:href="@{/books/search?page={p}&sort={s}&search={se}(p=${currPage}, s=${sort}, se=${search})}" th:text="${currPage}" th:if="${currPage != currentPage}"></a>
+        <a href="#" th:text="${currPage}" th:if="${currPage == currentPage}"></a>
+    </span>
+
+
+    <div style="margin-top: 5px"><a href="/books/new">Добавить новую книгу</a></div>
+    <br><hr>
+    <form th:method="GET" th:action="@{/people}">
+        <input type="submit" value="Перейти к читателям">
+    </form>
+</body>
+</html>

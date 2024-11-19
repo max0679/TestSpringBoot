@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h2 th:text="'Читатель ' + ${person.getName()}"></h2>
+    <br><hr>
+
+    <label for="name">Имя читателя: </label>
+    <span id="name" th:text="${person.getName()}"></span>
+    <br>
+    <label for="year">Год рождения читателя: </label>
+    <span id="year" th:text="${person.getYear()}"></span>
+
+    <br><hr>
+
+    <h3 th:if="${person.getBooks().size() != 0}">список книг читателя</h3>
+    <div th:each="book : ${person.getBooks()}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYearOfProduction()}"></a>
+    </div>
+
+    <br><hr>
+
+    <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}">
+        <input type="submit" value="Редактировать читателя">
+    </form>
+
+    <br><hr>
+
+    <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}" th:if="${person.getBooks().size() == 0}">
+        <input type="submit" value="Удалить читателя">
+    </form>
+
+
+</body>
+</html>
